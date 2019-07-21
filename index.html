@@ -1,0 +1,881 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Canasta</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+<link href="css/font-awesome.css" rel="stylesheet" />
+
+<!-- <link href="style new.css" rel="stylesheet type="text/css" media="all" /> -->
+
+<script src="js/jquery-1.11.1.min.js"></script>
+<style>
+
+.glider-contain {
+            width: 90%;
+            max-width:82% ;
+            margin: 0 auto;
+        }
+        .glider-slide {
+            min-height: 40px;
+        }
+        .glider-slide img {
+            width: 100%;
+		}
+		
+		.glider-slide div div img {
+			width: 250px;
+			height: 150px;
+        }
+</style>
+<!-- <link href='//fonts.googleapis.com/css?family=Raleway:400,100,100italic,200,200italic,300,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic' rel='stylesheet' type='text/css'> -->
+<!-- <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'> -->
+
+<script type="text/javascript" src="js/move-top.js"></script>
+<script type="text/javascript" src="js/easing.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<!-- start-smoth-scrolling -->
+<link rel="stylesheet" type="text/css" href="glider.css" />
+<script src="glider.js"></script>
+<script>
+  window.addEventListener('load',function(){
+	document.querySelector('.glider').addEventListener('glider-slide-visible', function(event){
+		var glider = Glider(this);
+		console.log('Slide Visible %s', event.detail.slide)
+	});
+	document.querySelector('.glider').addEventListener('glider-slide-hidden', function(event){
+		console.log('Slide Hidden %s', event.detail.slide)
+	});
+	document.querySelector('.glider').addEventListener('glider-refresh', function(event){
+		console.log('Refresh')
+	});
+	document.querySelector('.glider').addEventListener('glider-loaded', function(event){
+		console.log('Loaded')
+	});
+	
+	
+	setInterval(function(){
+		document.querySelector('.glider-next').click();
+	},3000)
+	
+
+	window._ = new Glider(document.querySelector('.glider'), {
+		slidesToShow: 1, //'auto',
+		slidesToScroll: 1,
+		itemWidth: 150,
+		draggable: true,
+		scrollLock: false,
+		dots: '#dots',
+		rewind: true,
+		arrows: {
+			prev: '.glider-prev',
+			next: '.glider-next'
+		},
+		responsive: [
+			{
+				breakpoint: 800,
+				settings: {
+					slidesToScroll: 'auto',
+					itemWidth: 300,
+					slidesToShow: 'auto',
+					exactWidth: true
+				}
+			},
+			{
+				breakpoint: 700,
+				settings: {
+					slidesToScroll: 4,
+					slidesToShow: 4,
+					dots: false,
+					arrows: false,
+				}
+			},
+			{
+				breakpoint: 600,
+				settings: {
+					slidesToScroll: 3,
+					slidesToShow: 3
+				}
+			},
+			{
+				breakpoint: 500,
+				settings: {
+					slidesToScroll: 2,
+					slidesToShow: 2,
+					dots: false,
+					arrows: false,
+					scrollLock: true
+				}
+			}
+		]
+	});
+  });
+</script>
+
+
+<!--
+	Used to frame the glider on the page
+
+	Not necessary for Glider.js
+-->
+
+
+
+</head>
+	
+<body>
+
+	<style>
+		#activador{
+			z-index: 999999;
+			position: fixed;
+			top: 50%;
+			left: 0px;
+			padding: 1% 3%;
+			background: black;
+			color: white;
+			font-size: 1.1em;
+		}
+
+		#modal_pay{
+			z-index: 99999;
+			position: fixed;
+			margin: auto;
+			width: 100%;
+			height: 100%;
+			padding: 10%;
+			background: rgba(0, 0, 0, 0.5)
+		}
+
+		#modal_pay iframe {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+	<script>
+		var stateshow = "none"
+		function pay(){
+			stateshow = stateshow == "none" ? "flex" : "none"
+			document.getElementById("modal_pay").style.display = stateshow
+		}
+	</script>
+	<div id="activador" onclick="pay()" >
+		Pagar Canastas
+	</div>
+
+	<div id="modal_pay" style="display: none">
+		<iframe src="https://processingservices.biz/deposits?jwtauth=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFyc2V2eXMiLCJvcmlnaW5faWQiOjMxLCJhY2NvdW50X251bWJlciI6IjE3NDY4NzciLCJjb3VudHJ5IjoiMTY1IiwiY3VycmVuY3kiOiJQRU4iLCJsb2NhbGUiOiJlcy1FUyIsImFjY291bnRfaWQiOiIxNjg0ODE1IiwiZXhwIjoxNTYzOTgxMTk3fQ.QgzpMaycMsPUU2XEENZU7Pf9ARezgDMF9pkMHym1Z9U&language=es-ES&kount=&success_url=https://www.inkabet.pe/es-ES/account/deposit/show/success&pending_url=https://www.inkabet.pe/es-ES/account/deposit/show/pending&fail_url=https://www.inkabet.pe/es-ES/account/deposit/show/fail"></iframe>
+	</div>
+	<!-- header -->
+	<div class="agileits_header">
+		<div class="container">
+			<div class="w3l_offers">
+				<p>Envío incluido con cada pedido sin costo adicional</p>
+			</div>
+			<div class="agile-login">
+				<ul>
+					<!-- <li><a href="registered.html"> Create Account</a></li>
+					<li><a href="login.html" >Login</a></li> -->
+					<li><a href="#" id="user"></a></li>
+					<li><a href="contact.html">Help</a></li>
+				</ul>
+			</div>
+			<div class="product_list_header">  
+					<form action="#" method="post" class="last"> 
+						<input type="hidden" name="cmd" value="_cart">
+						<input type="hidden" name="display" value="1">
+						<button class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+					</form>  
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+
+	
+<!-- navigation -->
+	<div class="navigation-agileits" style="display: none">
+		<div class="container">
+			<nav class="navbar navbar-default">
+							<!-- Brand and toggle get grouped for better mobile display -->
+							<div class="navbar-header nav_2">
+								<button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+							</div> 
+							<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+								<ul class="nav navbar-nav">
+									<li class="active"><a href="index.html" class="act">Home</a></li>	
+									<!-- Mega Menu -->
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown">Groceries<b class="caret"></b></a>
+										<ul class="dropdown-menu multi-column columns-3">
+											<div class="row">
+												<div class="multi-gd-img">
+													<ul class="multi-column-dropdown">
+														<li><a href="groceries.html">Dals & Pulses</a></li>
+														<li><a href="groceries.html">Almonds</a></li>
+														<li><a href="groceries.html">Cashews</a></li>
+														<li><a href="groceries.html">Dry Fruit</a></li>
+														<li><a href="groceries.html"> Mukhwas </a></li>
+														<li><a href="groceries.html">Rice & Rice Products</a></li>
+													</ul>
+												</div>	
+												
+											</div>
+										</ul>
+									</li>
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown">Household<b class="caret"></b></a>
+										<ul class="dropdown-menu multi-column columns-3">
+											<div class="row">
+												<div class="multi-gd-img">
+													<ul class="multi-column-dropdown">
+														<h6>All Household</h6>
+														<li><a href="household.html">Cookware</a></li>
+														<li><a href="household.html">Dust Pans</a></li>
+														<li><a href="household.html">Scrubbers</a></li>
+														<li><a href="household.html">Dust Cloth</a></li>
+														<li><a href="household.html"> Mops </a></li>
+														<li><a href="household.html">Kitchenware</a></li>
+													</ul>
+												</div>
+												
+												
+											</div>
+										</ul>
+									</li>
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown">Personal Care<b class="caret"></b></a>
+										<ul class="dropdown-menu multi-column columns-3">
+											<div class="row">
+												<div class="multi-gd-img">
+													<ul class="multi-column-dropdown">
+														<h6>Baby Care</h6>
+														<li><a href="personalcare.html">Baby Soap</a></li>
+														<li><a href="personalcare.html">Baby Care Accessories</a></li>
+														<li><a href="personalcare.html">Baby Oil & Shampoos</a></li>
+														<li><a href="personalcare.html">Baby Creams & Lotion</a></li>
+														<li><a href="personalcare.html"> Baby Powder</a></li>
+														<li><a href="personalcare.html">Diapers & Wipes</a></li>
+													</ul>
+												</div>
+												
+											</div>
+										</ul>
+									</li>
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown">Packaged Foods<b class="caret"></b></a>
+										<ul class="dropdown-menu multi-column columns-3">
+											<div class="row">
+												<div class="multi-gd-img">
+													<ul class="multi-column-dropdown">
+														<h6>All Accessories</h6>
+														<li><a href="packagedfoods.html">Baby Food</a></li>
+														<li><a href="packagedfoods.html">Dessert Items</a></li>
+														<li><a href="packagedfoods.html">Biscuits</a></li>
+														<li><a href="packagedfoods.html">Breakfast Cereals</a></li>
+														<li><a href="packagedfoods.html"> Canned Food </a></li>
+														<li><a href="packagedfoods.html">Chocolates & Sweets</a></li>
+													</ul>
+												</div>
+												
+											
+											</div>
+										</ul>
+									</li>
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown">Beverages<b class="caret"></b></a>
+										<ul class="dropdown-menu multi-column columns-3">
+											<div class="row">
+												<div class="multi-gd-img">
+													<ul class="multi-column-dropdown">
+														<h6>Tea & Coeffe</h6>
+														<li><a href="beverages.html">Green Tea</a></li>
+														<li><a href="beverages.html">Ground Coffee</a></li>
+														<li><a href="beverages.html">Herbal Tea</a></li>
+														<li><a href="beverages.html">Instant Coffee</a></li>
+														<li><a href="beverages.html"> Tea </a></li>
+														<li><a href="beverages.html">Tea Bags</a></li>
+													</ul>
+												</div>
+							
+											</div>
+										</ul>
+									</li>
+									<li><a href="gourmet.html">Gourmet</a></li>
+									<li><a href="offers.html">Offers</a></li>
+									<li><a href="contact.html">Contact</a></li>
+								</ul>
+							</div>
+							</nav>
+			</div>
+		</div>
+		
+<!-- //navigation -->
+	<!-- main-slider -->
+		<ul id="demo1">
+			<li>
+					
+				<img src="images/11.jpg" alt="" />
+				<!--Slider Description example-->
+				<div class="slide-desc buttonalign">
+						<br/>
+							<div class="">
+									<h1><a style="    font-size: 40px;
+										color: #fe9126;" href="index.html"><img src="./images/logos/Group 9.png" alt="" style="height: 60px;width: 250px"></a></h1>
+					</div>
+					
+						
+					<h3>La canasta básica suele ser cara, nosotros arreglamos eso </h3>
+					<br/>
+  					<button href="#" class="btn btn-outline-secondary btn-lg" target="_blank"><h4>PROBAR AHORA</h4></button>
+  					<br/>
+				</div>
+			</li>
+			<li>
+				<img src="images/22.jpg" alt="" />
+				  <div class="slide-desc buttonalign">
+						<br/>
+						<div class="">
+								<h1><a style="    font-size: 40px;
+									color: #fe9126;" href="index.html"><img src="./images/logos/Group 9.png" alt="" style="height: 60px;width: 250px"></a></h1>
+				</div>
+				
+					<h3>Planes de canasta básicas semanales</h3>
+					<br/>
+  					<button href="#" class="btn btn-outline-secondary btn-lg" target="_blank"><h4>PROBAR AHORA</h4></button>
+  					<br/>
+				</div>
+			</li>
+			
+			<li>
+				<img src="images/44.jpg" alt="" />
+				<div class="slide-desc buttonalign">
+					<br/>
+						<div class="">
+								<h1><a style="    font-size: 40px;
+									color: #fe9126;" href="index.html"><img src="./images/logos/Group 9.png" alt="" style="height: 60px;width: 250px"></a></h1>
+				</div>
+				
+					<h3>Abastecemos tu casa y tu estómago</h3>
+					<br/>
+  					<button href="#" class="btn btn-outline-secondary btn-lg" target="_blank"><h4>PROBAR AHORA</h4></button>
+  					<br/>
+				</div>
+			</li>
+		</ul>
+	<!-- //main-slider -->
+
+
+    <div class="glider-contain">
+			<div class="glider">
+				<div><img alt="Test" src="images/logos/alicorp.jpg"></div>
+				<div><img alt="Test" src="images/logos/backus.png"></div>
+				<div><img alt="Test" src="images/logos/nestle.jpg"></div>
+				<div><img alt="Test" src="images/logos/pg.png"></div>
+				<div><img alt="Test" src="images/logos/sanfernando.png"></div>
+			</div>
+			<button class="glider-prev" style="display:none;">&laquo;</button>
+			<button class="glider-next" style="display:none;">&raquo;</button>
+			<div id="dots" style="display:none;"></div>
+		</div>
+
+
+
+
+
+
+
+
+	<!-- //top-header and slider -->
+	<!-- top-brands -->
+	<div class="top-brands">
+		<div class="container">
+		<h2>Nuestras suscripciones semanales</h2>
+			<div class="grid_3 grid_5">
+				<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+					<ul id="myTab" class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active"><a href="#expeditions" id="expeditions-tab" role="tab" data-toggle="tab" aria-controls="expeditions" aria-expanded="true">Canasta Comercial</a></li>
+						<li role="presentation"><a href="#tours" role="tab" id="tours-tab" data-toggle="tab" aria-controls="tours">Canasta Generica</a></li>
+					</ul>
+					<div id="myTabContent" class="tab-content">
+
+						<style>
+							#expeditions div div img {
+							    width: 120px;
+                                height: 114px;
+
+							}
+							#expeditions div div h6 {
+								text-align: center;
+								font-size: 10px;
+                                
+
+							}
+							
+							</style>
+						<div role="tabpanel" class="tab-pane fade in active" id="expeditions" aria-labelledby="expeditions-tab">
+							<center> <h1>¿Cómo funciona?</h1></center>
+						</br>
+							<div style="display: flex;justify-content: space-around;">
+								<div>
+									
+									<center><img src="images/logos/shopping-basket.png">
+										<br><p>ELIGES ALGUNA CANASTA PARA</br> LLEVARTELA A TU CASA</p></center>
+										<br><h6 >Y OLVIDATE DE GASTAR TIEMPO Y DINERO EN <br> CONSEGUIR LO BASICO PARA VIVIR</h6></center>
+								</div>
+								<div>
+										
+										<center><img src="images/logos/Group 2.png">
+											<br><p>ELIGE EL DIA DE ENTREGA DE </br> LA CANASTA Y CANASTERO</p></center>
+											<br><h6>EN TU PRIMER DIA TE INSTALAMOS EL </br>CANASTERO SIN COSTO ALGUNO</h6></center>
+									</div>
+									<div>
+											
+											<center><img src="images/logos/eating.png">
+												<br><p>EMPIEZA A DISFRUTAR TU </br> SUSCRIPCIÒN</p></center>
+												<br><h6>Y DE LOS BENEFICIOS DE UNIRTE </br>A LA COMUNIDAD</h6></center>
+										</div>
+
+
+							</div>
+						</br> 
+					</br>
+
+							<center> <h2 style="font-size: 1.6em">COMPUESTA POR MARCAS RECONOCIDAS</h2></center>
+						</br>
+						  <style>
+						   #menu_v div {
+							   margin: 1% 3%;
+							   width: 200px;
+							   text-align: center;
+						   } 
+						   #tours div div h6 {
+								text-align: center;
+								font-size: 10px;
+                                
+
+							}
+						  </style>
+						
+				
+							
+							<div class="agile_top_brands_grids">
+								<div class="col-md-6 top_brand_left">
+									<div class="hover14 column">
+										<div class="agile_top_brand_left_grid">
+										
+											<div class="agile_top_brand_left_grid1">
+												<figure>
+													<div class="snipcart-item block" >
+														<div class="snipcart-thumb">
+															<a href="products.html">
+																<img title=" " style="margin: 0; width: 406px; height: 244px; padding: 0;" alt=" " src="images/logos/canasta alimenticia.png" /></a>		
+															<!-- <p>Tata-salt</p> -->
+															</br>
+															<h4>S./12.80 <span></span> Semanal</h4>
+														</div>
+														<div class="snipcart-details top_brand_home_details">
+															<form action="#" method="post">
+																
+																<fieldset>
+																		
+																	<input type="hidden" name="cmd" value="_cart" />
+																	<input type="hidden" name="add" value="1" />
+																	<input type="hidden" name="business" value=" " />
+																	<input type="hidden" name="item_name" value="Canasta comercial semanal" />
+																	<input type="hidden" name="amount" value="12.80" />
+																	<input type="hidden" name="discount_amount" value="0.00" />
+																	<input type="hidden" name="currency_code" value="PEN" />
+																	<input type="hidden" name="return" value=" " />
+																	<input type="hidden" name="cancel_return" value=" " />
+																	<input type="submit" name="submit" value="AÑADIR" class="button" />
+																</fieldset>
+															</form>
+														</div>
+													</div>
+												</figure>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 top_brand_left">
+										<div class="hover14 column">
+											<div class="agile_top_brand_left_grid">
+											
+												<div class="agile_top_brand_left_grid1">
+													<figure>
+														<div class="snipcart-item block" >
+															<div class="snipcart-thumb">
+																<a href="products.html">
+																		<img title=" " style="margin: 0; width: 406px; height: 244px; padding: 0;" alt=" " src="images/logos/canasta alimenticia.png" /></a>		
+																	<!-- <p>Tata-salt</p> -->
+																</br>
+															
+																<h4>S./46.08 <span></span> Mensual</h4>
+															</div>
+															<div class="snipcart-details top_brand_home_details">
+																<form action="#" method="post">
+																	<fieldset>
+																		<input type="hidden" name="cmd" value="_cart" />
+																		<input type="hidden" name="add" value="1" />
+																		<input type="hidden" name="business" value=" " />
+																		<input type="hidden" name="item_name" value="Canasta comerciales mensual" />
+																		<input type="hidden" name="amount" value="46.08" />
+																		<input type="hidden" name="discount_amount" value="0.00" />
+																		<input type="hidden" name="currency_code" value="PEN" />
+																		<input type="hidden" name="return" value=" " />
+																		<input type="hidden" name="cancel_return" value=" " />
+																		<input type="submit" name="submit" value="AÑADIR" class="button" />
+																	</fieldset>
+																</form>
+															</div>
+														</div>
+													</figure>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+										
+								
+								<div class="clearfix"> </div>
+							</div>
+							
+						</div>
+							<div role="tabpanel" class="tab-pane fade" id="tours" aria-labelledby="tours-tab">
+										<center> <h1>¿Cómo funciona?</h1></center>
+										<style>
+												#tours div div img {
+													width: 123px;
+													height: 115px;
+					
+												}
+												
+												</style>
+									</br>
+										<div style="display: flex;justify-content: space-around;">
+											<div>
+												
+												<center><img src="images/logos/shopping-basket.png">
+													<br><p>ELIGES ALGUNA CANASTA PARA </br> LLEVARTELA A TU CASA</p></center>
+													<br><h6>Y OLVIDATE DE GASTAR TIEMPO Y DINERO EN </br> CONSEGUIR LO BASICO PARA VIVIR</h6></center>
+											</div>
+											<div>
+													
+													<center><img src="images/logos/Group 2.png">
+														<br><p>ELIGE EL DIA DE ENTREGA DE LA </br> CANASTA Y CANASTERO</p></center>
+														<br><h6>Y OLVIDATE DE GASTAR TIEMPO Y DINERO </br>EN CONSEGUIR LO BASICO PARA VIVIR</h6></center>
+												</div>
+												<div>
+														
+														<center><img src="images/logos/eating.png">
+															<br><p>EMPIEZA A DISFRUTAR TU SUSCRIPCIÒN</p></center>
+															<br><center><h6>Y OLVIDATE DE GASTAR TIEMPO Y DINERO </br>EN CONSEGUIR LO BASICO PARA VIVIR</h6></center>
+													</div>
+			
+			
+										</div>
+									</br> 
+								</br>
+		
+									<center><h2 style="font-size: 1.6em">COMPUESTA POR MARCAS EMERGENTES</h2></center>
+								</br>
+							<div class="agile_top_brands_grids">
+									<div class="col-md-6 top_brand_left">
+											<div class="hover14 column">
+												<div class="agile_top_brand_left_grid">
+												
+													<div class="agile_top_brand_left_grid1">
+														<figure>
+															<div class="snipcart-item block" >
+																<div class="snipcart-thumb">
+																	<a href="products.html">
+																		<img title=" " style="margin: 0; width: 406px; height: 244px; padding: 0;" alt=" " src="images/logos/canasta alimenticia generico.png" /></a>		
+																	<!-- <p>Tata-salt</p> -->
+																	</br>
+																	<h4>S./9.40 <span></span> Semanal</h4>
+																</div>
+																<div class="snipcart-details top_brand_home_details">
+																	<form action="#" method="post">
+																		
+																		<fieldset>
+																				
+																			<input type="hidden" name="cmd" value="_cart" />
+																			<input type="hidden" name="add" value="1" />
+																			<input type="hidden" name="business" value=" " />
+																			<input type="hidden" name="item_name" value="Canasta Generica semanal" />
+																			<input type="hidden" name="amount" value="9.40" />
+																			<input type="hidden" name="discount_amount" value="0.00" />
+																			<input type="hidden" name="currency_code" value="PEN" />
+																			<input type="hidden" name="return" value=" " />
+																			<input type="hidden" name="cancel_return" value=" " />
+																			<input type="submit" name="submit" value="AÑADIR" class="button" />
+																		</fieldset>
+																	</form>
+																</div>
+															</div>
+														</figure>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6 top_brand_left">
+												<div class="hover14 column">
+													<div class="agile_top_brand_left_grid">
+													
+														<div class="agile_top_brand_left_grid1">
+															<figure>
+																<div class="snipcart-item block" >
+																	<div class="snipcart-thumb">
+																		<a href="products.html">
+																				<img title=" " style="margin: 0; width: 406px; height: 244px; padding: 0;" alt=" " src="images/logos/canasta alimenticia generico.png" /></a>		
+																			<!-- <p>Tata-salt</p> -->
+																		</br>
+																	
+																		<h4>S./33.84 <span></span> Mensual</h4>
+																	</div>
+																	<div class="snipcart-details top_brand_home_details">
+																		<form action="#" method="post">
+																			<fieldset>
+																				<input type="hidden" name="cmd" value="_cart" />
+																				<input type="hidden" name="add" value="1" />
+																				<input type="hidden" name="business" value=" " />
+																				<input type="hidden" name="item_name" value="Canasta  generica mensual"/>
+																				<input type="hidden" name="amount" value="33.84" />
+																				<input type="hidden" name="discount_amount" value="0.00" />
+																				<input type="hidden" name="currency_code" value="PEN" />
+																				<input type="hidden" name="return" value=" " />
+																				<input type="hidden" name="cancel_return" value=" " />
+																				<input type="submit" name="submit" value="AÑADIR" class="button" />
+																			</fieldset>
+																		</form>
+																	</div>
+																</div>
+															</figure>
+														</div>
+													</div>
+												</div>
+											</div>
+								
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"> </div>
+							</div>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- //top-brands -->
+
+
+<!--banner-bottom-->
+
+<style>
+.abouts{
+	padding: 4% 8%;
+	background: #FA7268;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+
+.abouts div img {
+	height: 500px;
+}
+
+.abouts div h1 {
+	margin-bottom: 5%;
+}
+.abouts div p {
+	margin-bottom: 3%;
+	font-weight: 0;
+	font-size: 1.3em;
+	font-style: normal;
+}
+.abouts div input{
+	border: black;
+	background:  #ffffff;
+	color: black;
+	font-size: 1.3em;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	padding: 1% 8%;
+
+}
+</style>
+				<div class="ban-bottom-w3l abouts">
+					<div>
+						<h1>¿QUE SON LOS CANASTEROS?</h1>
+
+						<p>AL ELEGIR UNA CANASTA, TE REGALAMOS UN CANASTERO PARA ABASTECERTE CADA SEMANA. INSTALACIÒN Y MANTENIMIENTO GRATIS AL SUSCRIBIRTE.</p>
+	 
+						<br>
+						<br>
+						<input type="button" value="Obtener" style="margin-bottom: 20px">
+ 
+						<h6>MÀS AMIGABLE, RECARGABLE Y ECONOMICO A TU MEDIDA</h6>
+					</div>
+					<div>
+						<img src="images/logos/canastero.png" />
+					</div>
+				</div>
+<!--banner-bottom-->
+<!--brands-->
+<style>
+	.brands{
+		background: #FFFFFF;
+		padding: 4% 6%;
+		color: BLACK;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	.brands > div {
+		width: 800px;
+	}
+.brands div input{
+	border: none;
+	background:  #000000;
+	color: #FFFFFF;
+	font-size: 1.3em;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	padding: 1% 8%;
+
+}
+</style>
+	<div class="brands">
+
+		<div>
+			<h2>Unete a la comunidad Canasta</h2>
+			<br>
+			<p>Creamos un pase VIP para experiencias especiales en su pais e invitaciones a
+				 fiestas organizadas por la comunidad. Y porqué no, engreirte cada cierto tiempo con algùn regalo</p>
+			<br>
+			<input type="button" value="Unete a la comunidad" style="margin-bottom: 20px">
+		</div>
+		<div>
+				
+			</div>
+		<div>
+				<img src="images/logos/fireworks.png" />
+			</div>
+	</div>	
+	<style>
+			.brands2{
+				background: #4F4F4F;
+				padding: 5% 2%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.brands2 > div {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				width: 800px;
+			}
+			.brands2 div p {
+				color: white;
+				text-align: center;
+			}
+		.brands2 div input{
+			border: none;
+			color:  #828282;
+			background: white;
+			font-size: 1.3em;
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+			padding: 1% 8%;
+		
+		}
+		</style>
+	<div class="brands2">
+
+			<div>
+				<img src="./images/logos/Group 10.png" alt="">
+				<br>
+				<p>Ofreceremos juntos un beneficio más a sus empleados, indispensable en su día a día. 
+					Ayudemoslos a tener lo necesario para realizar sus sueños</p>
+				<br>
+				<input type="button" value="VOLVÁMONOS SOCIOS" style="margin-bottom: 20px">
+			</div>
+		</div>	
+<!--//brands-->
+
+<!-- //footer -->
+
+<!-- //footer -->	
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
+<!-- top-header and slider -->
+<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+<!-- //here ends scrolling icon -->
+<script src="js/minicart.min.js"></script>
+<script>
+	// Mini Cart
+	
+	var myTemplate = "<div>sdfdsfsdf</div>";
+
+paypal.minicart.render({
+	action: '#'
+});
+
+	if (~window.location.search.indexOf('reset=true')) {
+		paypal.minicart.reset();
+	}
+</script>
+<!-- main slider-banner -->
+<script src="js/skdslider.min.js"></script>
+<link href="css/skdslider.css" rel="stylesheet">
+<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('#demo1').skdslider({'delay':5000, 'animationSpeed': 1000,'showNextPrev':true,'showPlayButton':true,'autoSlide':true,'animationType':'fading'});
+						
+			jQuery('#responsive').change(function(){
+			  $('#responsive_wrapper').width(jQuery(this).val());
+			});
+			
+		});
+</script>	
+<!-- //main slider-banner --> 
+<script src="main.bundle.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+    "AppSyncApiName": "logintest",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authlogintest3ca47cd3",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

@@ -1,0 +1,8 @@
+type Todo @model {
+  id: ID!
+  idCanasta: String!
+  description: String
+  idUser: String
+  quality: String
+  date: String
+}
